@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="3fe5c84a-21bb-45cc-86c1-85234002eb48" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="databaseFlow" doc:id="3187471d-8c19-4bc8-823e-685873e8d8ff" >
+		<http:listener doc:name="Listener" doc:id="3f8969d6-0083-4b0b-bf75-d7dc3d59d8ee" config-ref="HTTP_Listener_config" path="/DB"/>
+		<db:insert doc:name="Insert" doc:id="be23aa8b-57ef-4a89-a308-1c7e2d26b39a" >
+			<db:sql ><![CDATA[insert into table Mule-db;
+]]></db:sql>
+		</db:insert>
+		<ee:transform doc:name="Transform Message" doc:id="771887b6-45b7-45b0-967c-4bbbaa4284d8" >
+			<ee:message >
+				<ee:set-payload resource="Transform1.dwl" />
+			</ee:message>
+		</ee:transform>
+		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="c2e8c80f-7006-4750-b230-fdbb3d33e896" />
+	</flow>
+</mule>
